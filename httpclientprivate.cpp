@@ -37,7 +37,8 @@ bool HttpClientPrivate::downloadImage(const std::string &filename)
 {
     std::stringstream request; // response storage
     request << "GET /cat.jpg HTTP/1.1\r\n"
-            << "Host: " << "127.0.0.1" << "\r\n"
+            << "Host: " << "127.0.0.1:8000" << "\r\n"
+            << "Connection: keep-alive\r\n"
             << "Accept: */*\r\n";
 
     int result = send( connect_socket, request.str().c_str(), request.str().length(), 0 );
@@ -72,7 +73,7 @@ bool HttpClientPrivate::initAddress(const std::string &path, const std::string &
     struct addrinfo hints;
     ZeroMemory(&hints, sizeof(hints));
 
-    hints.ai_family   = AF_UNSPEC;        // AF_INET select web for working with socket
+    hints.ai_family   = AF_UNSPEC;      // AF_INET select web for working with socket
     hints.ai_socktype = SOCK_STREAM;    // Stream type socket
     hints.ai_protocol = IPPROTO_TCP;    // Using TCP/IP protocol
 
@@ -117,6 +118,13 @@ bool HttpClientPrivate::initSocket()
     {
         cerr << "connect failed with error: " << WSAGetLastError() << endl;
 
+        close();
+        return false;
+    }
+
+    if( connect_socket == INVALID_SOCKET )
+    {
+        cerr << "Unable to connect to server!" << endl;
         close();
         return false;
     }

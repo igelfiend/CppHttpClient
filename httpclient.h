@@ -10,7 +10,7 @@ class HttpClientPrivate;
 class HttpClient
 {
 public:
-    HttpClient(){}
+    HttpClient(): client(nullptr){}
 
     bool connect( const string &path, const string &port );
     bool getFile( const string &filename );

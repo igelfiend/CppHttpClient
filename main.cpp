@@ -13,7 +13,7 @@ int main()
     else
     {
         cout << "Successfully connected" << std::endl;
-//        client.getFile( "cat.jpg" );
+        client.getFile( "cat.jpg" );
     }
 
 
