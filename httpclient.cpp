@@ -2,6 +2,11 @@
 
 #include "httpclientprivate.h"
 
+HttpClient::~HttpClient()
+{
+    delete client;
+}
+
 bool HttpClient::connect(const std::string &path, const std::string &port)
 {
     if( client )
@@ -13,7 +18,7 @@ bool HttpClient::connect(const std::string &path, const std::string &port)
     return client->connectToServer( path, port );
 }
 
-bool HttpClient::getFile(const std::string &filename)
+bool HttpClient::downloadFile(const std::string &filename)
 {
     if( !client ) return false;
 
