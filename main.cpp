@@ -1,14 +1,32 @@
 #include <iostream>
+#include <string>
 #include "httpclient.h"
 
 using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 {
-    HttpClient client;
-    if( client.connect( "127.0.0.1", "8000" ) )
+    if( argc < 4 )
     {
-        client.downloadFile( "cat.jpg" );
+        cerr << "to few arguments count" << endl;
+        return -1;
+    }
+
+    string strAddres( argv[ 1 ] );
+    string strPort  ( argv[ 2 ] );
+    string filename ( argv[ 3 ] );
+
+    HttpClient client;
+    if( !client.connect( strAddres, strPort ) )
+    {
+        cerr << "connect error. Aborting." << endl;
+        return -1;
+    }
+
+    if( !client.downloadFile( filename ) )
+    {
+        cerr << "error downloading file" << endl;
+        return -2;
     }
 
     return 0;
